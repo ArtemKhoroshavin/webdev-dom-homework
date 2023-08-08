@@ -63,7 +63,8 @@
       const buttonElements = document.querySelectorAll(".like-button");
       
       for (const buttonElement of buttonElements) {
-        buttonElement.addEventListener("click", () => {
+        buttonElement.addEventListener("click", (event) => {
+          event.stopPropagation();
           // индекс = номер объекта в массиве, получаем из дата-атрибут кнопки на которую кликаем
           const index = buttonElement.dataset.index;
           // обращаемся к свойству isLiked объекта, который мы получили из массива comments по индексу 
@@ -78,11 +79,19 @@
           renderComments();
         });
       }
+
+      const commentsElements = document.querySelectorAll(".comment");
+      for(const comment of commentsElements) {
+        comment.addEventListener('click', () => {
+          const comments = comment.dataset.comments;
+          alert(`Ответ на комментарий: ${comments}`);
+        });
+      }
     };
 
     const renderComments = () => {
       const commentsHtml = comments.map((comment, index) => {
-        return `<li class="comment">
+        return `<li class="comment" data-comments="${comments.comment}">
           <div class="comment-header">
             <div>${comment.name}</div>
             <div>${comment.date}</div>
@@ -131,9 +140,9 @@
         return;
       }
       comments.push({
-      name: nameInputElement.value,
+      name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
       date: newDate,
-      comment: commentInputElement.value,
+      comment: commentInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
       like: 0,
       isLike: false,
     });

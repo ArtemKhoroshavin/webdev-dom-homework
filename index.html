@@ -84,14 +84,16 @@
       for(const comment of commentsElements) {
         comment.addEventListener('click', () => {
           const comments = comment.dataset.comments;
-          alert(`Ответ на комментарий: ${comments}`);
+          alert(`${comments}`);
         });
       }
     };
+    
+    
 
     const renderComments = () => {
       const commentsHtml = comments.map((comment, index) => {
-        return `<li class="comment" data-comments="${comments.comment}">
+        return `<li class="comment" data-comments="${comment.comment}">
           <div class="comment-header">
             <div>${comment.name}</div>
             <div>${comment.date}</div>
@@ -113,7 +115,7 @@
 
       initEventListeners();
     };
-
+    
     renderComments();
 
     const likesElements = document.querySelectorAll(".likes");
@@ -150,7 +152,7 @@
 
       document.getElementById('name-input').value = '';
       document.getElementById('comment-input').value = '';
-
+      
 
     // // \const oldListHtml = listElement.innerHTML;
     // const newDate = new Date();

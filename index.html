@@ -85,6 +85,7 @@
         comment.addEventListener('click', () => {
           const comments = comment.dataset.comments;
           alert(`${comments}`);
+          renderComments();
         });
       }
     };
@@ -129,7 +130,7 @@
     renderComments();
 
     buttonElement.addEventListener('click', () => {
-
+      
       nameInputElement.classList.remove('error');
       commentInputElement.classList.remove('error');
 

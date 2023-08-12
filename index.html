@@ -82,14 +82,13 @@
 
       const commentsElements = document.querySelectorAll(".comment");
       for(const comment of commentsElements) {
-        comment.addEventListener('click', () => {
+        comment.addEventListener("click", () => {
           const comments = comment.dataset.comments;
-          alert(`${comments}`);
-          renderComments();
+          commentInputElement.value = comments;
+          nameInputElement.value = comment.name;
         });
-      }
+      };
     };
-    
     
 
     const renderComments = () => {

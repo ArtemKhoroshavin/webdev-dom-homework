@@ -85,11 +85,17 @@
         comment.addEventListener("click", () => {
           const comments = comment.dataset.comments;
           commentInputElement.value = comments;
-          nameInputElement.value = comment.name;
         });
       };
     };
     
+    const commentsElements = document.querySelectorAll(".name");
+      for(const name of commentsElements) {
+        comment.addEventListener("click", () => {
+          const comments = name.dataset.comments;
+          nameInputElement.value = comments;
+        });
+      };
 
     const renderComments = () => {
       const commentsHtml = comments.map((comment, index) => {

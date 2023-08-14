@@ -42,6 +42,26 @@
 
     const listElement = document.getElementById("comments");
 
+
+    const fetchPromise = fetch(
+      "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
+      {
+        method: "GET"
+      });
+
+      fetchPromise.then((response) => {
+
+        const jsonPromise = response.json()
+        jsonPromise.then((responseData) => {
+          console.log(responseData);
+
+          let = responseData.comments;
+          renderComments();
+
+        });
+
+      });
+
     const comments = [
       {
         name: 'Глеб Фокин',
@@ -51,7 +71,7 @@
         isLiked: false,
       },
       {
-        name: 'Варвара Н.',
+        name: 'Варвара Н.', 
         date: '13.02.22 19:22',
         comment: 'Мне нравится как оформлена эта страница! ❤',
         like: 75,
@@ -88,18 +108,10 @@
         });
       };
     };
-    
-    const commentsElements = document.querySelectorAll(".name");
-      for(const name of commentsElements) {
-        comment.addEventListener("click", () => {
-          const comments = name.dataset.comments;
-          nameInputElement.value = comments;
-        });
-      };
 
     const renderComments = () => {
       const commentsHtml = comments.map((comment, index) => {
-        return `<li class="comment" data-comments="${comment.comment}">
+        return `<li class="comment" data-comments="${comment.comment} : ${comment.name}">
           <div class="comment-header">
             <div>${comment.name}</div>
             <div>${comment.date}</div>
@@ -154,6 +166,30 @@
       like: 0,
       isLike: false,
     });
+
+    const fetchPromise = fetch(
+      "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          text: commentInputElement.value,
+        }),
+        body: JSON.stringify({
+          text: nameInputElement.value,
+        }),
+      });
+
+      fetchPromise.then((response) => {
+
+        const jsonPromise = response.json();
+        jsonPromise.then((responseData) => {
+          
+          let = responseData.comments;
+          renderComments();
+        });
+
+      });
+
     renderComments();
 
       document.getElementById('name-input').value = '';

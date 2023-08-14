@@ -42,6 +42,26 @@
 
     const listElement = document.getElementById("comments");
 
+
+    const fetchPromise = fetch(
+      "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
+      {
+        method: "GET"
+      });
+
+      fetchPromise.then((response) => {
+
+        const jsonPromise = response.json()
+        jsonPromise.then((responseData) => {
+          console.log(responseData);
+
+          let = responseData.comments;
+          renderComments();
+
+        });
+
+      });
+
     const comments = [
       {
         name: 'Глеб Фокин',
@@ -51,7 +71,7 @@
         isLiked: false,
       },
       {
-        name: 'Варвара Н.',
+        name: 'Варвара Н.', 
         date: '13.02.22 19:22',
         comment: 'Мне нравится как оформлена эта страница! ❤',
         like: 75,
@@ -63,7 +83,8 @@
       const buttonElements = document.querySelectorAll(".like-button");
       
       for (const buttonElement of buttonElements) {
-        buttonElement.addEventListener("click", () => {
+        buttonElement.addEventListener("click", (event) => {
+          event.stopPropagation();
           // индекс = номер объекта в массиве, получаем из дата-атрибут кнопки на которую кликаем
           const index = buttonElement.dataset.index;
           // обращаемся к свойству isLiked объекта, который мы получили из массива comments по индексу 
@@ -78,11 +99,19 @@
           renderComments();
         });
       }
+
+      const commentsElements = document.querySelectorAll(".comment");
+      for(const comment of commentsElements) {
+        comment.addEventListener("click", () => {
+          const comments = comment.dataset.comments;
+          commentInputElement.value = comments;
+        });
+      };
     };
 
     const renderComments = () => {
       const commentsHtml = comments.map((comment, index) => {
-        return `<li class="comment">
+        return `<li class="comment" data-comments="${comment.comment} : ${comment.name}">
           <div class="comment-header">
             <div>${comment.name}</div>
             <div>${comment.date}</div>
@@ -104,7 +133,7 @@
 
       initEventListeners();
     };
-
+    
     renderComments();
 
     const likesElements = document.querySelectorAll(".likes");
@@ -118,7 +147,7 @@
     renderComments();
 
     buttonElement.addEventListener('click', () => {
-
+      
       nameInputElement.classList.remove('error');
       commentInputElement.classList.remove('error');
 
@@ -131,17 +160,41 @@
         return;
       }
       comments.push({
-      name: nameInputElement.value,
+      name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
       date: newDate,
-      comment: commentInputElement.value,
+      comment: commentInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
       like: 0,
       isLike: false,
     });
+
+    const fetchPromise = fetch(
+      "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          text: commentInputElement.value,
+        }),
+        body: JSON.stringify({
+          text: nameInputElement.value,
+        }),
+      });
+
+      fetchPromise.then((response) => {
+
+        const jsonPromise = response.json();
+        jsonPromise.then((responseData) => {
+          
+          let = responseData.comments;
+          renderComments();
+        });
+
+      });
+
     renderComments();
 
       document.getElementById('name-input').value = '';
       document.getElementById('comment-input').value = '';
-
+      
 
     // // \const oldListHtml = listElement.innerHTML;
     // const newDate = new Date();

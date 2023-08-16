@@ -51,7 +51,7 @@
 
       fetchPromise.then((response) => {
 
-        const jsonPromise = response.json()
+        const jsonPromise = response.json();
         jsonPromise.then((responseData) => {
           console.log(responseData);
 
@@ -61,6 +61,20 @@
         });
 
       });
+
+      fetchPromise.then((responseData) => {
+    const appComments = responseData.comments.map((comment) => {
+      return {
+        name: comment.author.name,
+        date: new Date(comment.date),
+        text: comment.text,
+        likes: comment.likes,
+        isLiked: false,
+      };
+    });
+    comments = appComments;
+    renderComments();
+   });
 
     const comments = [
       {
@@ -173,10 +187,9 @@
         method: "POST",
         body: JSON.stringify({
           text: commentInputElement.value,
+          name: nameInputElement.value,
         }),
-        body: JSON.stringify({
-          text: nameInputElement.value,
-        }),
+
       });
 
       fetchPromise.then((response) => {

@@ -46,37 +46,19 @@
     const fetchPromise = fetch(
       "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
       {
-        method: "GET"
+        method: "GET",
       });
 
       fetchPromise.then((response) => {
-
-        const jsonPromise = response.json();
-        jsonPromise.then((responseData) => {
-          console.log(responseData);
-
-          let = responseData.comments;
-          renderComments();
-
-        });
-
-      });
-
-      fetchPromise.then((responseData) => {
-    const appComments = responseData.comments.map((comment) => {
-      return {
-        name: comment.author.name,
-        date: new Date(comment.date),
-        text: comment.text,
-        likes: comment.likes,
-        isLiked: false,
-      };
+    const jsonPromise = response.json();
+    jsonPromise.then((responseData) => {
+      console.log(responseData);
+      comments = responseData.comments;
+      renderComments();
     });
-    comments = appComments;
-    renderComments();
    });
 
-    const comments = [
+    let comments = [
       {
         name: 'Глеб Фокин',
         date: '12.02.22 12:18',
@@ -197,10 +179,9 @@
         const jsonPromise = response.json();
         jsonPromise.then((responseData) => {
           
-          let = responseData.comments;
+          comments = responseData.comments;
           renderComments();
         });
-
       });
 
     renderComments();

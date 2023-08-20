@@ -50,30 +50,24 @@
       });
 
       fetchPromise.then((response) => {
-    const jsonPromise = response.json();
-    jsonPromise.then((responseData) => {
-      console.log(responseData);
-      comments = responseData.comments;
-      renderComments();
-    });
-   });
 
-    let comments = [
-      {
-        name: 'Глеб Фокин',
-        date: '12.02.22 12:18',
-        comment: 'Это будет первый комментарий на этой странице',
-        like: 3,
-        isLiked: false,
-      },
-      {
-        name: 'Варвара Н.', 
-        date: '13.02.22 19:22',
-        comment: 'Мне нравится как оформлена эта страница! ❤',
-        like: 75,
-        isLiked: true,
-      },
-    ];
+      const jsonPromise = response.json();
+        jsonPromise.then((responseData) => {
+
+        comments = responseData.comments.map((comment) => {
+          return {
+            name: comment.author.name,
+            date: newDate,
+            comment: comment.text,
+            likes: comment.likes,
+            Iliked: 0,
+    };
+        });
+  renderComments();
+});
+});
+
+    let comments = [];
 
     const initEventListeners = () => {
       const buttonElements = document.querySelectorAll(".like-button");
@@ -86,10 +80,10 @@
           // обращаемся к свойству isLiked объекта, который мы получили из массива comments по индексу 
           if (comments[index].isLiked) {
             comments[index].isLiked = false;
-            comments[index].like--;
+            comments[index].likes--;
           } else {
             comments[index].isLiked = true;
-            comments[index].like++;
+            comments[index].likes++;
           }
           
           renderComments();
@@ -118,7 +112,7 @@
             </div>
             <div class="comment-footer">
             <div class="likes">
-              <span class="likes-counter">${comment.like}</span>
+              <span class="likes-counter">${comment.likes}</span>
               <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-index="${index}"></button>
             </div>
           </div>
@@ -155,13 +149,13 @@
         commentInputElement.classList.add('error');
         return;
       }
-      comments.push({
-      name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
-      date: newDate,
-      comment: commentInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
-      like: 0,
-      isLike: false,
-    });
+    //   comments.push({
+    //   name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
+    //   date: newDate,
+    //   comment: commentInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
+    //   like: 0,
+    //   isLike: false,
+    // });
 
     const fetchPromise = fetch(
       "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",

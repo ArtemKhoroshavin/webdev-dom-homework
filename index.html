@@ -157,26 +157,78 @@
     //   isLike: false,
     // });
 
-    const fetchPromise = fetch(
-      "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          text: commentInputElement.value,
-          name: nameInputElement.value,
-        }),
+    buttonElement.disabled = true;
+    buttonElement.textContent = 'Ждём, комментарий добавляется...';
 
+  //   const fetchPromise = fetch(
+  // "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
+  // {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     text: commentInputElement.value,
+  //     name: nameInputElement.value,
+  //   }),
+
+  // });
+
+  // fetchPromise.then(() => {
+
+  //   fetch("https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments", {
+  //     method: "GET"
+  //   }).then((response) => {
+  //     const jsonPromise = response.json();
+  //     jsonPromise.then((responseData) => {
+  //       comments = responseData.comments.map((comment) => {
+  //         return {
+  //           name: comment.author.name,
+  //           date: comment.date,
+  //           comment: comment.text,
+  //           likes: comment.likes,
+  //           Iliked: 0,
+  //         };
+  //       });
+  //       buttonElement.disabled = false;
+  //       buttonElement.textContent = 'Написать';
+  //       renderComments();
+  //     });
+  //   });
+  // });
+
+  const fetchPromise = fetch(
+  "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
+  {
+    method: "POST",
+    body: JSON.stringify({
+      text: commentInputElement.value,
+      name: nameInputElement.value,
+    }),
+
+  }).then((response) => {
+    return response.json();
+  }).then((responseData) => {
+    return fetch("https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments", {
+        method: "GET"
       });
-
-      fetchPromise.then((response) => {
-
-        const jsonPromise = response.json();
-        jsonPromise.then((responseData) => {
-          
-          comments = responseData.comments;
-          renderComments();
+  })
+  .then((response) => {
+    return response.json();
+  })
+  .then((responseData) => {
+    comments = responseData.comments.map((comment) => {
+          return {
+            name: comment.author.name,
+            date: newDate,
+            comment: comment.text,
+            likes: comment.likes,
+            Iliked: 0,
+    };
         });
-      });
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Написать';
+  renderComments();
+  })
+  ;
+    
 
     renderComments();
 

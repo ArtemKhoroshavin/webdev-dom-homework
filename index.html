@@ -42,8 +42,8 @@
 
     const listElement = document.getElementById("comments");
 
-
-    const fetchPromise = fetch(
+    
+    const fetchPromise = fetch( 
       "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
       {
         method: "GET",
@@ -124,6 +124,7 @@
       initEventListeners();
     };
     
+    
     renderComments();
 
     const likesElements = document.querySelectorAll(".likes");
@@ -201,11 +202,19 @@
     body: JSON.stringify({
       text: commentInputElement.value,
       name: nameInputElement.value,
+      forceError: true,
     }),
 
   }).then((response) => {
-    return response.json();
-  }).then((responseData) => {
+    if(response.status === 201) {
+      return response.json();
+    } else {
+      if (response.status === 400) throw new Error("Мало символов")
+        if (response.status === 500) throw new Error("Сервер упал")
+        throw new Error ("Сломался интернет")
+    }
+  })
+  .then((responseData) => {
     return fetch("https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments", {
         method: "GET"
       });
@@ -225,9 +234,18 @@
         });
         buttonElement.disabled = false;
         buttonElement.textContent = 'Написать';
+        nameInputElement.value = '';
+        commentInputElement.value = '';
+
+        
   renderComments();
+  }).catch((error) => {
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Написать';
+        if (error.message === "Мало символов") return alert ('Введите больше 3-х символов')
+      alert('Кажется, у вас сломался интернет, попробуйте позже');
+      console.warn(error);
   })
-  ;
     
 
     renderComments();
@@ -256,8 +274,8 @@
     //       </div>
     //     </li>
     //     `
-        nameInputElement.value = '';
-        commentInputElement.value = '';
+        // nameInputElement.value = '';
+        // commentInputElement.value = '';
         
     })
     // Код писать здесь

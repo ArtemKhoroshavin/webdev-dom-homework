@@ -7,7 +7,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="start">"Комментарии загружаются..."</div>
+      <div id="start">"Комментарии загружаются..."</div>
       <ul id="comments" class="comments"> 
       </ul>
       <div class="add-form">
@@ -40,8 +40,17 @@
     const nameInputElement = document.getElementById('name-input');
     const commentInputElement = document.getElementById('comment-input');
     const newDate = new Date();
-
     const listElement = document.getElementById("comments");
+
+    // const startElement = document.getElementById('start').style.display = "none";
+      function start() {
+    let start = document.getElementById('start');
+    if (start.style.display === 'none') {
+      start.style.display = 'block';
+    } else {
+    start.style.display = 'none';
+    }
+  };
 
     
     const fetchPromise = fetch( 
@@ -251,8 +260,8 @@
 
     renderComments();
 
-      document.getElementById('name-input').value = '';
-      document.getElementById('comment-input').value = '';
+      // document.getElementById('name-input').value = '';
+      // document.getElementById('comment-input').value = '';
       
 
     // // \const oldListHtml = listElement.innerHTML;

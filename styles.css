@@ -14,9 +14,7 @@ body {
     min-height: 100vh;
   }
   
-  .start {
-    display: none;
-  }
+
   .comments,
   .comment {
     margin: 0;

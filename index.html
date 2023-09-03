@@ -51,8 +51,8 @@
     start.style.display = 'none';
     }
   };
-
-    
+  
+   
     const fetchPromise = fetch( 
       "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
       {
@@ -60,7 +60,7 @@
       });
 
       fetchPromise.then((response) => {
-
+        
       const jsonPromise = response.json();
         jsonPromise.then((responseData) => {
 
@@ -73,6 +73,7 @@
             Iliked: 0,
     };
         });
+        start();
   renderComments();
 });
 });

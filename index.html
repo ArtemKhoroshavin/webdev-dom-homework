@@ -7,6 +7,7 @@
   </head>
   <body>
     <div class="container">
+      <div id="start">"Комментарии загружаются..."</div>
       <ul id="comments" class="comments"> 
       </ul>
       <div class="add-form">
@@ -39,50 +40,79 @@
     const nameInputElement = document.getElementById('name-input');
     const commentInputElement = document.getElementById('comment-input');
     const newDate = new Date();
-
     const listElement = document.getElementById("comments");
 
-    const comments = [
+    // const startElement = document.getElementById('start').style.display = "none";
+      function start() {
+    let start = document.getElementById('start');
+    if (start.style.display === 'none') {
+      start.style.display = 'block';
+    } else {
+    start.style.display = 'none';
+    }
+  };
+  
+   
+    const fetchPromise = fetch( 
+      "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
       {
-        name: 'Глеб Фокин',
-        date: '12.02.22 12:18',
-        comment: 'Это будет первый комментарий на этой странице',
-        like: 3,
-        isLiked: false,
-      },
-      {
-        name: 'Варвара Н.',
-        date: '13.02.22 19:22',
-        comment: 'Мне нравится как оформлена эта страница! ❤',
-        like: 75,
-        isLiked: true,
-      },
-    ];
+        method: "GET",
+      });
+
+      fetchPromise.then((response) => {
+        
+      const jsonPromise = response.json();
+        jsonPromise.then((responseData) => {
+
+        comments = responseData.comments.map((comment) => {
+          return {
+            name: comment.author.name,
+            date: newDate,
+            comment: comment.text,
+            likes: comment.likes,
+            Iliked: 0,
+    };
+        });
+        start();
+  renderComments();
+});
+});
+
+    let comments = [];
 
     const initEventListeners = () => {
       const buttonElements = document.querySelectorAll(".like-button");
       
       for (const buttonElement of buttonElements) {
-        buttonElement.addEventListener("click", () => {
+        buttonElement.addEventListener("click", (event) => {
+          event.stopPropagation();
           // индекс = номер объекта в массиве, получаем из дата-атрибут кнопки на которую кликаем
           const index = buttonElement.dataset.index;
           // обращаемся к свойству isLiked объекта, который мы получили из массива comments по индексу 
           if (comments[index].isLiked) {
             comments[index].isLiked = false;
-            comments[index].like--;
+            comments[index].likes--;
           } else {
             comments[index].isLiked = true;
-            comments[index].like++;
+            comments[index].likes++;
           }
           
           renderComments();
         });
       }
+
+      const commentsElements = document.querySelectorAll(".comment");
+      for(const comment of commentsElements) {
+        comment.addEventListener("click", () => {
+          const comments = comment.dataset.comments;
+          commentInputElement.value = comments;
+        });
+      };
     };
 
     const renderComments = () => {
       const commentsHtml = comments.map((comment, index) => {
-        return `<li class="comment">
+        return `<li class="comment" data-comments="${comment.comment} : ${comment.name}">
           <div class="comment-header">
             <div>${comment.name}</div>
             <div>${comment.date}</div>
@@ -93,7 +123,7 @@
             </div>
             <div class="comment-footer">
             <div class="likes">
-              <span class="likes-counter">${comment.like}</span>
+              <span class="likes-counter">${comment.likes}</span>
               <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-index="${index}"></button>
             </div>
           </div>
@@ -104,7 +134,8 @@
 
       initEventListeners();
     };
-
+    
+    
     renderComments();
 
     const likesElements = document.querySelectorAll(".likes");
@@ -118,7 +149,7 @@
     renderComments();
 
     buttonElement.addEventListener('click', () => {
-
+      
       nameInputElement.classList.remove('error');
       commentInputElement.classList.remove('error');
 
@@ -130,18 +161,109 @@
         commentInputElement.classList.add('error');
         return;
       }
-      comments.push({
+    //   comments.push({
+    //   name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
+    //   date: newDate,
+    //   comment: commentInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
+    //   like: 0,
+    //   isLike: false,
+    // });
+
+    buttonElement.disabled = true;
+    buttonElement.textContent = 'Ждём, комментарий добавляется...';
+
+  //   const fetchPromise = fetch(
+  // "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
+  // {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     text: commentInputElement.value,
+  //     name: nameInputElement.value,
+  //   }),
+
+  // });
+
+  // fetchPromise.then(() => {
+
+  //   fetch("https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments", {
+  //     method: "GET"
+  //   }).then((response) => {
+  //     const jsonPromise = response.json();
+  //     jsonPromise.then((responseData) => {
+  //       comments = responseData.comments.map((comment) => {
+  //         return {
+  //           name: comment.author.name,
+  //           date: comment.date,
+  //           comment: comment.text,
+  //           likes: comment.likes,
+  //           Iliked: 0,
+  //         };
+  //       });
+  //       buttonElement.disabled = false;
+  //       buttonElement.textContent = 'Написать';
+  //       renderComments();
+  //     });
+  //   });
+  // });
+
+  const fetchPromise = fetch(
+  "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
+  {
+    method: "POST",
+    body: JSON.stringify({
+      text: commentInputElement.value,
       name: nameInputElement.value,
-      date: newDate,
-      comment: commentInputElement.value,
-      like: 0,
-      isLike: false,
-    });
+      forceError: true,
+    }),
+
+  }).then((response) => {
+    if(response.status === 201) {
+      return response.json();
+    } else {
+      if (response.status === 400) throw new Error("Мало символов")
+        if (response.status === 500) throw new Error("Сервер упал")
+        throw new Error ("Сломался интернет")
+    }
+  })
+  .then((responseData) => {
+    return fetch("https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments", {
+        method: "GET"
+      });
+  })
+  .then((response) => {
+    return response.json();
+  })
+  .then((responseData) => {
+    comments = responseData.comments.map((comment) => {
+          return {
+            name: comment.author.name,
+            date: newDate,
+            comment: comment.text,
+            likes: comment.likes,
+            Iliked: 0,
+    };
+        });
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Написать';
+        nameInputElement.value = '';
+        commentInputElement.value = '';
+
+        
+  renderComments();
+  }).catch((error) => {
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Написать';
+        if (error.message === "Мало символов") return alert ('Введите больше 3-х символов')
+      alert('Кажется, у вас сломался интернет, попробуйте позже');
+      console.warn(error);
+  })
+    
+
     renderComments();
 
-      document.getElementById('name-input').value = '';
-      document.getElementById('comment-input').value = '';
-
+      // document.getElementById('name-input').value = '';
+      // document.getElementById('comment-input').value = '';
+      
 
     // // \const oldListHtml = listElement.innerHTML;
     // const newDate = new Date();
@@ -163,8 +285,8 @@
     //       </div>
     //     </li>
     //     `
-        nameInputElement.value = '';
-        commentInputElement.value = '';
+        // nameInputElement.value = '';
+        // commentInputElement.value = '';
         
     })
     // Код писать здесь

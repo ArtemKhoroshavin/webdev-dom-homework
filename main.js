@@ -1,4 +1,4 @@
-import { getComments } from "./api.js";
+import { postComments, getComments } from "./api.js";
 const buttonElement = document.getElementById('add-button');
     const commentElement = document.getElementById('comments');
     const nameInputElement = document.getElementById('name-input');
@@ -15,16 +15,8 @@ const buttonElement = document.getElementById('add-button');
     }
   };
   
-    const fetchPromise = fetch( 
-      "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
-      {
-        method: "GET",
-      });
-
-      fetchPromise.then((response) => {
-        
-      const jsonPromise = response.json();
-        jsonPromise.then((responseData) => {
+    
+      getComments().then((responseData) => {
 
         comments = responseData.comments.map((comment) => {
           return {
@@ -38,7 +30,7 @@ const buttonElement = document.getElementById('add-button');
         start();
   renderComments();
 });
-});
+
 
     let comments = [];
 
@@ -122,17 +114,11 @@ const buttonElement = document.getElementById('add-button');
     buttonElement.disabled = true;
     buttonElement.textContent = 'Ждём, комментарий добавляется...';
 
-  const fetchPromise = fetch(
-  "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
-  {
-    method: "POST",
-    body: JSON.stringify({
-      text: commentInputElement.value,
-      name: nameInputElement.value,
-      forceError: true,
-    }),
-
-  }).then((response) => {
+   // тут(строчка ниже) был POST
+    postComments({ 
+      comment: commentInputElement.value === '',
+      name: nameInputElement.value === ''
+     }).then((response) => {
     if(response.status === 201) {
       return response.json();
     } else {
@@ -177,4 +163,4 @@ const buttonElement = document.getElementById('add-button');
 
     })
     // Код писать здесь
-    console.log("It works!");
+    // console.log("It works!");

@@ -14,16 +14,8 @@ export function postComments( comment, name ) {
           body: JSON.stringify({
             text: comment,
             name: name,
-            forceError: true,
-          }),
+            // forceError: true,
+          })
       
-        }).then((response) => {
-          if(response.status === 201) {
-            return response.json();
-        } else {
-            if (response.status === 400) throw new Error("Мало символов")
-              if (response.status === 500) throw new Error("Сервер упал")
-              throw new Error ("Сломался интернет")
-          }
         })
 }

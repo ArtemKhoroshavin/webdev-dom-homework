@@ -117,6 +117,7 @@ const buttonElement = document.getElementById('add-button');
    // тут(строчка ниже) был POST
     postComments({ 
       comment: commentInputElement.value,
+      name: nameInputElement.value,
       
      }).then((response) => {
     if(response.status === 201) {

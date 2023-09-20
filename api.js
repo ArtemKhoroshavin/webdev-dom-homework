@@ -6,7 +6,7 @@ export function getComments() {
     });
 }
 
-export function postComments( comment, name ) {
+export function postComments( {comment, name} ) {
     return fetch(
         "https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments",
         {

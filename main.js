@@ -128,9 +128,15 @@ const buttonElement = document.getElementById('add-button');
         throw new Error ("Сломался интернет")
     }
   })
+
+    // let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k"
+  
   .then((responseData) => {
-    return fetch("https://wedev-api.sky.pro/api/v1/artem-khoroshavin/comments", {
-        method: "GET"
+    return fetch("https://wedev-api.sky.pro/api/v2/artem-khoroshavin/comments", {
+        method: "GET",
+        // headers: {
+        //   Authorization: token,
+        // }
       });
   })
   .then((response) => {

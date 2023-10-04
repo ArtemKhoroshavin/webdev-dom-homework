@@ -150,6 +150,7 @@ const buttonElement = document.getElementById('add-button');
             comment: comment.text,
             likes: comment.likes,
             Iliked: 0,
+            
     };
         });
         buttonElement.disabled = false;

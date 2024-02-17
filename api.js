@@ -1,11 +1,16 @@
 // const commentUrl = "https://wedev-api.sky.pro/api/v2/artem-khoroshavin/comments"
 // const userUrl = "https://wedev-api.sky.pro/api/user/login"
-export let token = false
+export let token 
+export const setToken = (newToken) => {
+  token = newToken
+}
 
 export function getComments() {
   return fetch("https://wedev-api.sky.pro/api/v2/artem-khoroshavin/comments", {
       method: "GET",
-      
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
   }).then((response) => {
       return response.json();
   });
@@ -20,9 +25,9 @@ export function postComments( {comment, name} ) {
           body: JSON.stringify({
             text: comment,
             name: name,
-            // headers: {
-            //   Authorization: Bearer${token}
-            // }
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
             forceError: true,
 //             login: loginInputElement.value,
 // 			password: passwordInputElement.value,

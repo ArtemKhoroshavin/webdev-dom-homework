@@ -88,4 +88,4 @@ export function renderComments(comments) {
     })
 }
 // тут писать?
-renderLogin();
+// renderLogin();

@@ -1,10 +1,6 @@
-export function renderLogin() {
-    const appElement = document.getElementById("app");
-    const loginPageHtml = `страница логина в разработке..`
-    appElement.innerHTML = loginPageHtml;
-}
+import { login, setToken } from "./api.js";
+import { renderComments } from "./renderComments.js";
 
-//если убрать всё ниже, хоть форма работает
 export const renderLogin = () => {
     const appElement = document.getElementById("app");
     const loginHtml = `
@@ -26,4 +22,15 @@ export const renderLogin = () => {
     </div>
     `;
     appElement.innerHTML = loginHtml;
+    const loginInputElement = document.getElementById("login-input");
+    const passwordInputElement = document.getElementById("password-input");
+    const buttonElement = document.getElementById("login-button");
+    buttonElement.addEventListener("click",() => {
+        const loginValue = loginInputElement.value
+        const passwordValue = passwordInputElement.value
+        login({login: loginValue, password: passwordValue}).then((responseData) => {
+            setToken(responseData.user.token);
+            renderComments([]);
+        })
+    });  
 };

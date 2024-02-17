@@ -1,7 +1,10 @@
 import { renderComments } from "./renderComments.js";
 import { postComments, getComments } from "./api.js";
 import { renderLogin } from "./renderLogin.js";
-const newDate = new Date();
+
+renderLogin();
+
+
 // const listElement = document.getElementById("comments");
 
 // function start() {
@@ -13,21 +16,21 @@ const newDate = new Date();
 //   }
 // };
 
-let comments = [];
-getComments().then((responseData) => {
+// let comments = [];
+// getComments().then((responseData) => {
 
-  comments = responseData.comments.map((comment) => {
-    return {
-      name: comment.author.name,
-      date: newDate,
-      comment: comment.text,
-      likes: comment.likes,
-      Iliked: 0,
-    };
-  });
-  // start();
-  renderComments(comments);
-});
+//   comments = responseData.comments.map((comment) => {
+//     return {
+//       name: comment.author.name,
+//       date: newDate,
+//       comment: comment.text,
+//       likes: comment.likes,
+//       Iliked: 0,
+//     };
+//   });
+//   // start();
+//   renderComments(comments);
+// });
 
 // const initEventListeners = () => {
 //   const buttonElements = document.querySelectorAll(".like-button");

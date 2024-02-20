@@ -2,7 +2,7 @@ import { token } from "./api.js";
 import { renderLogin } from "./renderLogin.js";
 
 export function renderComments(comments) {
-    const appElement = document.getElementById("app");
+    const appElement = document.querySelector(".container");
     const commentsHtml = comments.map((comment, index) => {
         return `<li class="comment" data-comments="${comment.comment} : ${comment.name}">
               <div class="comment-header">
@@ -21,8 +21,7 @@ export function renderComments(comments) {
               </div>
             </li>`
     }).join('');
-    const commentPageHtml = `<div class="container">
-    <div id="start">"Комментарии загружаются..."</div>
+    const commentPageHtml = `
     <ul id="comments" class="comments"> 
     ${commentsHtml}
     </ul>
@@ -41,8 +40,8 @@ export function renderComments(comments) {
     <div class="add-form-row">
       <button id="add-button" class="add-form-button">Написать</button>
     </div>
-  </div>` : `<a id="link-to-login">Перейти на страницу входа</a>`}
-  </div>`
+  </div>` : `<a id="link-to-login">Что бы добавить комментарий, авторизуйтесь</a>`}
+  `
     appElement.innerHTML = commentPageHtml;
     const buttonElement = document.getElementById('add-button');
 

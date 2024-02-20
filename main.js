@@ -2,8 +2,7 @@ import { renderComments } from "./renderComments.js";
 import { postComments, getComments } from "./api.js";
 import { renderLogin } from "./renderLogin.js";
 
-renderLogin();
-
+// renderComments();
 
 // const listElement = document.getElementById("comments");
 
@@ -16,21 +15,30 @@ renderLogin();
 //   }
 // };
 
-// let comments = [];
-// getComments().then((responseData) => {
-
-//   comments = responseData.comments.map((comment) => {
-//     return {
-//       name: comment.author.name,
-//       date: newDate,
-//       comment: comment.text,
-//       likes: comment.likes,
-//       Iliked: 0,
-//     };
-//   });
-//   // start();
-//   renderComments(comments);
-// });
+export let comments = [];
+export let setComments = (newComments) => {
+  comments = newComments
+};
+getComments().then((responseData) => {
+  let start = document.getElementById('start');
+  if (start.style.display === 'none') {
+        start.style.display = 'block';
+      } else {
+        start.style.display = 'none';
+      }
+  const comments = responseData.comments.map((comment) => {
+    return {
+      name: comment.author.name,
+      date: new Date().toLocaleDateString(),
+      comment: comment.text,
+      likes: comment.likes,
+      Iliked: 0,
+    };
+  });
+  // start();
+  renderComments(comments);
+  setComments(comments);
+});
 
 // const initEventListeners = () => {
 //   const buttonElements = document.querySelectorAll(".like-button");

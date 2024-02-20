@@ -1,24 +1,25 @@
 import { login, setToken } from "./api.js";
 import { renderComments } from "./renderComments.js";
+import { comments } from "./main.js";
 
 export const renderLogin = () => {
-    const appElement = document.getElementById("app");
+    const appElement = document.querySelector(".container");
     const loginHtml = `
     <h1>Страница входа</h1>
-    <div class="form">
-        <h3 class="form-title">Форма входа</h3>
-        <div class="form-row">
-            <input type="text" id="login-input" class="input" placeholder="Логин">
+    <div class="add-form">
+        <h3 class="add-form-title">Форма входа</h3>
+        <div class="add-form-row">
+            <input type="text" id="login-input" class="add-form-name" placeholder="Логин">
             <input 
             type="text"
             id="password-input"
-            class="input"
+            class="add-form-name"
             placeholder="Пароль"
             />
         </div>
         <br />
-        <button class="button" id="login-button">Войти</button>
-        <a href="index.html" id="link-to-comments">Перейти на страницу комментариев</a>
+        <button class="add-form-button" id="login-button">Войти</button>
+        <a class="add-form-button" href="index.html" id="link-to-comments">Перейти на страницу комментариев</a>
     </div>
     `;
     appElement.innerHTML = loginHtml;
@@ -30,7 +31,7 @@ export const renderLogin = () => {
         const passwordValue = passwordInputElement.value
         login({login: loginValue, password: passwordValue}).then((responseData) => {
             setToken(responseData.user.token);
-            renderComments([]);
+            renderComments(comments);
         })
     });  
 };

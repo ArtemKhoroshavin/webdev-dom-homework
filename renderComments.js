@@ -90,12 +90,7 @@ export function renderComments(comments) {
           comment: commentInputElement.value,
         }).then(() => {
           getComments().then((responseData) => {
-            let start = document.getElementById('start');
-            if (start.style.display === 'none') {
-                  start.style.display = 'block';
-                } else {
-                  start.style.display = 'none';
-                }
+            
             const comments = responseData.comments.map((comment) => {
               return {
                 name: comment.author.name,

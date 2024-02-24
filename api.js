@@ -21,19 +21,14 @@ export function postComments( {comment, name} ) {
     return fetch(
         "https://wedev-api.sky.pro/api/v2/artem-khoroshavin/comments",
         {
-          method: "POST",
+          method: "POST", 
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          forceError: true,
           body: JSON.stringify({
             text: comment,
             name: name,
-            headers: {
-              Authorization: `Bearer ${token}`
-            },
-            forceError: true,
-//             login: loginInputElement.value,
-// 			password: passwordInputElement.value,
-// 		})
-// .then((responseData) => {
-// 				setToken(responseData.user.token)
           })
       
         })

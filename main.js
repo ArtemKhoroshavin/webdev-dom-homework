@@ -35,7 +35,6 @@ getComments().then((responseData) => {
       Iliked: 0,
     };
   });
-  // start();
   renderComments(comments);
   setComments(comments);
 });

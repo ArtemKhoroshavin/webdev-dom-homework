@@ -1,5 +1,6 @@
-import { token } from "./api.js";
+import { token, postComments, getComments } from "./api.js";
 import { renderLogin } from "./renderLogin.js";
+import { setComments } from "./main.js";
 
 export function renderComments(comments) {
     const appElement = document.querySelector(".container");
@@ -72,7 +73,7 @@ export function renderComments(comments) {
         renderLogin();
     })
     buttonElement?.addEventListener('click', () => {
-
+    
         nameInputElement.classList.remove('error');
         commentInputElement.classList.remove('error');
 
@@ -84,6 +85,30 @@ export function renderComments(comments) {
             commentInputElement.classList.add('error');
             return;
         }
+        postComments( {
+          name: nameInputElement.value,
+          comment: commentInputElement.value,
+        }).then(() => {
+          getComments().then((responseData) => {
+            let start = document.getElementById('start');
+            if (start.style.display === 'none') {
+                  start.style.display = 'block';
+                } else {
+                  start.style.display = 'none';
+                }
+            const comments = responseData.comments.map((comment) => {
+              return {
+                name: comment.author.name,
+                date: new Date().toLocaleDateString(),
+                comment: comment.text,
+                likes: comment.likes,
+                Iliked: 0,
+              };
+            });
+            renderComments(comments);
+            setComments(comments);
+          });
+        })
     })
 }
 // тут писать?

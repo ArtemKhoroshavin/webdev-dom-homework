@@ -4,13 +4,17 @@ export let token
 export const setToken = (newToken) => {
   token = newToken
 }
+export let user 
+export const setUser = (newUser) => {
+  user = newUser
+}
 
 export function getComments() {
   return fetch("https://wedev-api.sky.pro/api/v2/artem-khoroshavin/comments", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+      // headers: {
+      //   Authorization: `Bearer ${user.token}`
+      // },
   }).then((response) => {
       return response.json();
   });
@@ -23,7 +27,7 @@ export function postComments( {comment, name} ) {
         {
           method: "POST", 
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${user.token}`
           },
           forceError: true,
           body: JSON.stringify({

@@ -1,6 +1,7 @@
-import { login, setToken } from "./api.js";
+import { login, setToken, setUser } from "./api.js";
 import { renderComments } from "./renderComments.js";
 import { comments } from "./main.js";
+
 
 export const renderLogin = () => {
     const appElement = document.querySelector(".container");
@@ -30,7 +31,7 @@ export const renderLogin = () => {
         const loginValue = loginInputElement.value
         const passwordValue = passwordInputElement.value
         login({login: loginValue, password: passwordValue}).then((responseData) => {
-            setToken(responseData.user.token);
+            setUser(responseData.user);
             renderComments(comments);
         })
     });  

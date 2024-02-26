@@ -62,11 +62,11 @@ getComments().then((responseData) => {
 
 //   const commentsElements = document.querySelectorAll(".comment");
 //   for (const comment of commentsElements) {
-    // comment.addEventListener("click", () => {
-    //   const comments = comment.dataset.comments;
-    //   commentInputElement.value = comments;
-    // });
-  // };
+//     comment.addEventListener("click", () => {
+//       const comments = comment.dataset.comments;
+//       commentInputElement.value = comments;
+//     });
+//   };
 // };
 
 
@@ -100,15 +100,15 @@ getComments().then((responseData) => {
 //     comment: commentInputElement.value,
 //     name: nameInputElement.value,
 
-//   }).then((response) => {
-//     if (response.status === 201) {
-//       return response.json();
-//     } else {
-//       if (response.status === 400) throw new Error("Мало символов")
-//       if (response.status === 500) throw new Error("Сервер упал")
-//       throw new Error("Сломался интернет")
-//     }
-//   })
+  // }).then((response) => {
+  //   if (response.status === 201) {
+  //     return response.json();
+  //   } else {
+  //     if (response.status === 400) throw new Error("Мало символов")
+  //     if (response.status === 500) throw new Error("Сервер упал")
+  //     throw new Error("Сломался интернет")
+  //   }
+  // })
 
 //     // let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k"
 
@@ -134,19 +134,19 @@ getComments().then((responseData) => {
 
 //         };
 //       });
-//       buttonElement.disabled = false;
-//       buttonElement.textContent = 'Написать';
-//       nameInputElement.value = '';
-//       commentInputElement.value = '';
+    //   buttonElement.disabled = false;
+    //   buttonElement.textContent = 'Написать';
+    //   nameInputElement.value = '';
+    //   commentInputElement.value = '';
 
-//       renderComments();
-//     }).catch((error) => {
-//       buttonElement.disabled = false;
-//       buttonElement.textContent = 'Написать';
-//       if (error.message === "Мало символов") return alert('Введите больше 3-х символов')
-//       alert('Кажется, у вас сломался интернет, попробуйте позже');
-//       console.warn(error);
-//     })
+    //   renderComments();
+    // }).catch((error) => {
+    //   buttonElement.disabled = false;
+    //   buttonElement.textContent = 'Написать';
+    //   if (error.message === "Мало символов") return alert('Введите больше 3-х символов')
+    //   alert('Кажется, у вас сломался интернет, попробуйте позже');
+    //   console.warn(error);
+    // })
 
 //   renderComments();
 

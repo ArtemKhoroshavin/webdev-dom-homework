@@ -1,11 +1,12 @@
-import { token, postComments, getComments } from "./api.js";
+import { user, postComments, getComments } from "./api.js";
 import { renderLogin } from "./renderLogin.js";
 import { setComments } from "./main.js";
 
 export function renderComments(comments) {
+  
     const appElement = document.querySelector(".container");
     const commentsHtml = comments.map((comment, index) => {
-        return `<li class="comment" data-comments="${comment.comment} : ${comment.name}">
+        return `<li class="comment" data-index="${index}">
               <div class="comment-header">
                 <div>${comment.name}</div>
                 <div>${comment.date}</div>
@@ -26,12 +27,12 @@ export function renderComments(comments) {
     <ul id="comments" class="comments"> 
     ${commentsHtml}
     </ul>
-    ${token ? `<div class="add-form">
+    ${user && user.token ? `<div class="add-form">
     <input
       type="text"
       class="add-form-name"
       placeholder="Введите ваше имя"
-    id="name-input" value="" />
+    id="name-input" value="${user.name}" readonly />
     <textarea id="comment-input"
       type="textarea"
       class="add-form-text"
@@ -52,6 +53,20 @@ export function renderComments(comments) {
 
     const buttonElements = document.querySelectorAll(".like-button");
 
+    const answerComment = document.querySelectorAll(".comment");
+    for (const comment of answerComment) {
+      comment.addEventListener("click", () => {
+        const comments = comment.dataset.comments;
+            commentInputElement.value = comments;
+      });
+    };
+    // const commentsElements = document.querySelectorAll(".comment");
+    // for (const comment of commentsElements) {
+    //   comment.addEventListener("click", () => {
+    //     const comments = comment.dataset.comments;
+    //     commentInputElement.value = comments; 
+    //   });
+    // }; ФУНКЦИЯ ИЗ МЕЙНА 63 СТРОКА
     for (const buttonElement of buttonElements) {
         buttonElement.addEventListener("click", (event) => {
             event.stopPropagation();
@@ -65,7 +80,6 @@ export function renderComments(comments) {
                 comments[index].isLiked = true;
                 comments[index].likes++;
             }
-
             renderComments(comments);
         });
     }
@@ -85,6 +99,10 @@ export function renderComments(comments) {
             commentInputElement.classList.add('error');
             return;
         }
+        // отсюда
+        buttonElement.disabled = true;
+        buttonElement.textContent = 'Ждём, комментарий добавляется...';
+        // до сюда с мейна
         postComments( {
           name: nameInputElement.value,
           comment: commentInputElement.value,
@@ -104,7 +122,27 @@ export function renderComments(comments) {
             setComments(comments);
           });
         })
-    })
+    }).then((response) => {
+    if (response.status === 201) {
+      return response.json();
+    } else {
+      if (response.status === 400) throw new Error("Мало символов")
+      if (response.status === 500) throw new Error("Сервер упал")
+      throw new Error("Сломался интернет")
+    }
+  }).catch((error) => {
+    buttonElement.disabled = false;
+    buttonElement.textContent = 'Написать';
+    if (error.message === "Мало символов") return alert('Введите больше 3-х символов')
+    alert('Кажется, у вас сломался интернет, попробуйте позже');
+    console.warn(error);
+  })
+  // buttonElement.disabled = false;
+  //     buttonElement.textContent = 'Написать';
+  //     nameInputElement.value = '';
+  //     commentInputElement.value = '';
+  // со 125 по 133 с мейна, со 133 по 138 из мейна
 }
+
 // тут писать?
 // renderLogin();

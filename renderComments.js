@@ -54,18 +54,15 @@ export function renderComments(comments) {
     const buttonElements = document.querySelectorAll(".like-button");
 
     const answerComment = document.querySelectorAll(".comment");
+    
     for (const comment of answerComment) {
       comment.addEventListener("click", () => {
-        const comments = comment.dataset.comments;
-            commentInputElement.value = comments;
+        const index = comment.dataset.index;
+        const element = comments[index];
+        commentInputElement.value = `${element.name}: ${element.comment}`;
       });
     };
-    // const commentsElements = document.querySelectorAll(".comment");
-    // for (const comment of commentsElements) {
-    //   comment.addEventListener("click", () => {
-    //     const comments = comment.dataset.comments;
-    //     commentInputElement.value = comments; 
-    //   });
+
     // }; ФУНКЦИЯ ИЗ МЕЙНА 63 СТРОКА
     for (const buttonElement of buttonElements) {
         buttonElement.addEventListener("click", (event) => {

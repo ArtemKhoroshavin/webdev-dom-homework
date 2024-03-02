@@ -13,6 +13,7 @@ body {
     background: #202020;
     min-height: 100vh;
   }
+  
 
   .comments,
   .comment {
@@ -109,6 +110,7 @@ body {
   .add-form-name {
     width: 300px;
     padding: 11px 22px;
+    opacity: 0.7;
   }
 
   .add-form-text {
